@@ -26,8 +26,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
 {
     /**
      * A list of all PHP magic methods.
-     *
-     * @var array
      */
     protected array $_magicMethods = [
         'construct',

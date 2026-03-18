@@ -30,7 +30,7 @@ class BlankLineBeforeReturnSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_RETURN];
     }
@@ -38,7 +38,7 @@ class BlankLineBeforeReturnSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
         $current = $stackPtr;
@@ -60,15 +60,14 @@ class BlankLineBeforeReturnSniff implements Sniff
             }
             $current--;
         }
-
-        if (
-            isset($prevLineTokens[0])
-            && ($prevLineTokens[0] === T_OPEN_CURLY_BRACKET
-                || $prevLineTokens[0] === T_COLON
-                || $prevLineTokens[0] === T_OPEN_TAG)
-        ) {
+        if (isset($prevLineTokens[0])
+        && ($prevLineTokens[0] === T_OPEN_CURLY_BRACKET
+            || $prevLineTokens[0] === T_COLON
+            || $prevLineTokens[0] === T_OPEN_TAG)) {
             return;
-        } elseif (count($prevLineTokens) > 0) {
+        }
+
+        if (count($prevLineTokens) > 0) {
             $fix = $phpcsFile->addFixableError(
                 'Missing blank line before return statement',
                 $stackPtr,

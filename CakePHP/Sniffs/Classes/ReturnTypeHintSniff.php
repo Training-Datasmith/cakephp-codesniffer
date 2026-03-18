@@ -25,7 +25,7 @@ class ReturnTypeHintSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_FUNCTION];
     }
@@ -33,7 +33,7 @@ class ReturnTypeHintSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -92,7 +92,6 @@ class ReturnTypeHintSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile File
      * @param int $stackPointer Stack pointer
-     * @return bool
      */
     protected function isChainingMethod(File $phpCsFile, int $stackPointer): bool
     {
@@ -134,7 +133,6 @@ class ReturnTypeHintSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile File
      * @param int $stackPointer Stack pointer
-     * @return void
      */
     protected function assertNotThisOrStatic(File $phpCsFile, int $stackPointer): void
     {
@@ -163,7 +161,10 @@ class ReturnTypeHintSniff implements Sniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
-            if (!$content || strpos($content, '\\') !== 0) {
+            if (!$content) {
+                continue;
+            }
+            if (!str_starts_with((string) $content, '\\')) {
                 continue;
             }
 
@@ -214,13 +215,12 @@ class ReturnTypeHintSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile File
-     * @return string|null
      */
     protected function getClassNameWithNamespace(File $phpCsFile): ?string
     {
         try {
             $lastToken = TokenHelper::getLastTokenPointer($phpCsFile);
-        } catch (EmptyFileException $e) {
+        } catch (EmptyFileException) {
             return null;
         }
 

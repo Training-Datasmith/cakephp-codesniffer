@@ -29,7 +29,7 @@ class FunctionSpacingSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_FUNCTION];
     }
@@ -37,7 +37,7 @@ class FunctionSpacingSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -104,7 +104,6 @@ class FunctionSpacingSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile File
      * @param int $closingBraceIndex Index
      * @param int|null $nextContentIndex Index
-     * @return void
      */
     protected function assertNewLineAtTheEnd(File $phpCsFile, int $closingBraceIndex, ?int $nextContentIndex): void
     {
@@ -127,7 +126,6 @@ class FunctionSpacingSniff implements Sniff
      *
      * @param \PHP_CodeSniffer\Files\File $phpCsFile File
      * @param int $stackPointer Stack pointer
-     * @return void
      */
     protected function assertNewLineAtTheBeginning(File $phpCsFile, int $stackPointer): void
     {

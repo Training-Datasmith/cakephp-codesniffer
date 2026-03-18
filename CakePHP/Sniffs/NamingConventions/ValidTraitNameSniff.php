@@ -26,7 +26,7 @@ class ValidTraitNameSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_TRAIT];
     }
@@ -34,12 +34,12 @@ class ValidTraitNameSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
         $traitName = $tokens[$stackPtr + 2]['content'];
 
-        if (substr($traitName, -5) !== 'Trait') {
+        if (!str_ends_with((string) $traitName, 'Trait')) {
             $error = 'Traits must have a "Trait" suffix.';
             $phpcsFile->addError($error, $stackPtr, 'InvalidTraitName');
         }

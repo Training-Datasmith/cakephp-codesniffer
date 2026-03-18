@@ -27,7 +27,7 @@ class SingleQuoteSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_CONSTANT_ENCAPSED_STRING];
     }
@@ -35,7 +35,7 @@ class SingleQuoteSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -48,10 +48,10 @@ class SingleQuoteSniff implements Sniff
         $content = $tokens[$stackPtr]['content'];
         if (
             $content[0] === '"'
-            && strpos($content, "'") === false
-            && strpos($content, "\n") === false
+            && !str_contains((string) $content, "'")
+            && !str_contains((string) $content, "\n")
             // regex: odd number of backslashes, not followed by double quote or dollar
-            && !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
+            && !preg_match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', (string) $content)
         ) {
             $fix = $phpcsFile->addFixableError(
                 'Use single instead of double quotes for simple strings.',
@@ -59,7 +59,7 @@ class SingleQuoteSniff implements Sniff
                 'UseSingleQuote',
             );
             if ($fix) {
-                $content = substr($content, 1, -1);
+                $content = substr((string) $content, 1, -1);
                 $content = str_replace(['\\"', '\\$'], ['"', '$'], $content);
                 $phpcsFile->fixer->replaceToken($stackPtr, '\'' . $content . '\'');
             }

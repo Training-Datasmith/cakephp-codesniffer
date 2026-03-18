@@ -31,10 +31,9 @@ class DisallowShortOpenTagSniff implements Sniff
      * If short open tags are NOT enabled, <? is not considered a T_OPEN_TAG
      * So include T_INLINE_HTML which is what "<?" is detected as
      *
-     * @return array
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_OPEN_TAG,
@@ -45,14 +44,14 @@ class DisallowShortOpenTagSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
         $openTag = $tokens[$stackPtr];
 
-        if (trim($openTag['content']) === '<?') {
+        if (trim((string) $openTag['content']) === '<?') {
             $error = 'Short PHP opening tag used; expected "<?php" but found "%s"';
-            $data = [trim($openTag['content'])];
+            $data = [trim((string) $openTag['content'])];
             $phpcsFile->addError($error, $stackPtr, 'Found', $data);
         }
     }

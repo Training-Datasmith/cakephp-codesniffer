@@ -30,7 +30,7 @@ class EmptyLinesSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_WHITESPACE];
     }
@@ -38,7 +38,7 @@ class EmptyLinesSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
         // If the current and next two tokens are newlines

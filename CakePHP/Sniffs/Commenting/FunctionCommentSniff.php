@@ -41,10 +41,9 @@ class FunctionCommentSniff implements Sniff
     /**
      * Returns an array of tokens this test wants to listen for.
      *
-     * @return array
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    public function register()
+    public function register(): array
     {
         return [T_FUNCTION];
     }
@@ -52,7 +51,7 @@ class FunctionCommentSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -110,7 +109,6 @@ class FunctionCommentSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token in the stack passed in $tokens.
-     * @return void
      */
     protected function processTagSpacing(File $phpcsFile, int $stackPtr, int $commentStart): void
     {
@@ -137,7 +135,6 @@ class FunctionCommentSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token in the stack passed in $tokens.
      * @param int $commentStart The position in the stack where the comment started.
-     * @return void
      */
     protected function processThrows(File $phpcsFile, int $stackPtr, int $commentStart): void
     {
@@ -151,7 +148,7 @@ class FunctionCommentSniff implements Sniff
             $exception = null;
             if ($tokens[$tag + 2]['code'] === T_DOC_COMMENT_STRING) {
                 $matches = [];
-                preg_match('/([^\s]+)(?:\s+(.*))?/', $tokens[$tag + 2]['content'], $matches);
+                preg_match('/([^\s]+)(?:\s+(.*))?/', (string) $tokens[$tag + 2]['content'], $matches);
                 $exception = $matches[1] ?? null;
             }
 

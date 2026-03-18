@@ -27,7 +27,7 @@ class TabAndSpaceSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_WHITESPACE];
     }
@@ -35,7 +35,7 @@ class TabAndSpaceSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -44,15 +44,15 @@ class TabAndSpaceSniff implements Sniff
             return;
         }
 
-        if (strpos($tokens[$stackPtr]['content'], '  ') !== false) {
+        if (str_contains((string) $tokens[$stackPtr]['content'], '  ')) {
             $error = 'Double space found';
             $phpcsFile->addError($error, $stackPtr, 'DoubleSpace');
         }
-        if (strpos($tokens[$stackPtr]['content'], " \t") !== false) {
+        if (str_contains((string) $tokens[$stackPtr]['content'], " \t")) {
             $error = 'Space and tab found';
             $phpcsFile->addError($error, $stackPtr, 'SpaceAndTab');
         }
-        if (strpos($tokens[$stackPtr]['content'], "\t ") !== false) {
+        if (str_contains((string) $tokens[$stackPtr]['content'], "\t ")) {
             $error = 'Tab and space found';
             $phpcsFile->addError($error, $stackPtr, 'TabAndSpace');
         }

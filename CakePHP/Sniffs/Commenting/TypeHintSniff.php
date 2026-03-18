@@ -39,15 +39,10 @@ use PHPStan\PhpDocParser\ParserConfig;
  */
 class TypeHintSniff implements Sniff
 {
-    /**
-     * @var bool
-     */
     public bool $convertArraysToGenerics = true;
 
     /**
      * Keeps types in the form: \ClassName|Type[].
-     *
-     * @var bool
      */
     public bool $ignorePhpStormGenerics = false;
 
@@ -69,10 +64,9 @@ class TypeHintSniff implements Sniff
     /**
      * Returns an array of tokens this test wants to listen for.
      *
-     * @return array
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    public function register()
+    public function register(): array
     {
         return [T_DOC_COMMENT_OPEN_TAG];
     }
@@ -80,7 +74,7 @@ class TypeHintSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -89,13 +83,12 @@ class TypeHintSniff implements Sniff
         }
 
         foreach ($tokens[$stackPtr]['comment_tags'] as $tag) {
-            if (
-                $tokens[$tag + 2]['code'] !== T_DOC_COMMENT_STRING ||
-                !in_array($tokens[$tag]['content'], self::$typeHintTags, true)
-            ) {
+            if ($tokens[$tag + 2]['code'] !== T_DOC_COMMENT_STRING) {
                 continue;
             }
-
+            if (!in_array($tokens[$tag]['content'], self::$typeHintTags, true)) {
+                continue;
+            }
             $tagComment = $phpcsFile->fixer->getTokenContent($tag + 2);
             $valueNode = self::getValueNode($tokens[$tag]['content'], $tagComment);
             if ($valueNode instanceof InvalidTagValueNode) {
@@ -171,7 +164,6 @@ class TypeHintSniff implements Sniff
 
     /**
      * @param array $types node types
-     * @return bool
      */
     protected function isPhpStormGenericType(array $types): bool
     {
@@ -186,7 +178,6 @@ class TypeHintSniff implements Sniff
 
     /**
      * @param array $types node types
-     * @return string
      */
     protected function getSortedTypeHint(array $types): string
     {
@@ -274,7 +265,6 @@ class TypeHintSniff implements Sniff
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $typeNodes type nodes
-     * @return string
      */
     protected function renderUnionTypes(array $typeNodes): string
     {
@@ -289,7 +279,6 @@ class TypeHintSniff implements Sniff
     /**
      * @param string $tagName tag name
      * @param string $tagComment tag comment
-     * @return \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode
      */
     protected static function getValueNode(string $tagName, string $tagComment): PhpDocTagValueNode
     {

@@ -26,7 +26,7 @@ class InheritDocSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_DOC_COMMENT_OPEN_TAG];
     }
@@ -34,7 +34,7 @@ class InheritDocSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -52,20 +52,20 @@ class InheritDocSniff implements Sniff
         }
 
         if (
-            preg_match('/@inheritDoc/i', $tokens[$inheritDoc]['content']) === 1 &&
-            preg_match('/@inheritDoc/', $tokens[$inheritDoc]['content']) === 0
+            preg_match('/@inheritDoc/i', (string) $tokens[$inheritDoc]['content']) === 1 &&
+            preg_match('/@inheritDoc/', (string) $tokens[$inheritDoc]['content']) === 0
         ) {
             $msg = 'inheritDoc is not capitalized correctly';
             $fix = $phpcsFile->addFixableWarning($msg, $inheritDoc, 'BadSpelling');
             if ($fix === true) {
-                $fixed = preg_replace('/inheritDoc/i', 'inheritDoc', $tokens[$inheritDoc]['content']);
+                $fixed = preg_replace('/inheritDoc/i', 'inheritDoc', (string) $tokens[$inheritDoc]['content']);
                 $phpcsFile->fixer->replaceToken($inheritDoc, $fixed);
             }
         }
 
         if (
-            preg_match('/^@inheritDoc/i', $tokens[$inheritDoc]['content']) === 1 &&
-            ( preg_match('/^@inheritDoc$/i', $tokens[$inheritDoc]['content']) !== 1 ||
+            preg_match('/^@inheritDoc/i', (string) $tokens[$inheritDoc]['content']) === 1 &&
+            ( preg_match('/^@inheritDoc$/i', (string) $tokens[$inheritDoc]['content']) !== 1 ||
               $phpcsFile->findNext($empty, $inheritDoc + 1, $commentEnd, true) !== false
             )
         ) {
@@ -74,7 +74,7 @@ class InheritDocSniff implements Sniff
         }
 
         if (
-            preg_match('/^{@inheritDoc}$/i', $tokens[$inheritDoc]['content']) === 1 &&
+            preg_match('/^{@inheritDoc}$/i', (string) $tokens[$inheritDoc]['content']) === 1 &&
             $phpcsFile->findNext($empty, $inheritDoc + 1, $commentEnd, true) === false
         ) {
             $msg = 'When inheriting entire doc comment, @inheritDoc must be used instead of {@inheritDoc}.';
@@ -85,8 +85,8 @@ class InheritDocSniff implements Sniff
         }
 
         if (
-            preg_match('/^{@inheritDoc}/i', $tokens[$inheritDoc]['content']) === 1 &&
-            preg_match('/^{@inheritDoc}$/i', $tokens[$inheritDoc]['content']) !== 1
+            preg_match('/^{@inheritDoc}/i', (string) $tokens[$inheritDoc]['content']) === 1 &&
+            preg_match('/^{@inheritDoc}$/i', (string) $tokens[$inheritDoc]['content']) !== 1
         ) {
             $msg = 'If using {@inheritDoc} to copy description, it must be the first line in doc comment.';
             $phpcsFile->addWarning($msg, $inheritDoc, 'FirstLine');
@@ -94,7 +94,7 @@ class InheritDocSniff implements Sniff
 
         $nextComment = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $inheritDoc + 1, $commentEnd);
         while ($nextComment !== false) {
-            if (preg_match('/^{@inheritDoc}$/i', $tokens[$nextComment]['content']) === 1) {
+            if (preg_match('/^{@inheritDoc}$/i', (string) $tokens[$nextComment]['content']) === 1) {
                 $msg = 'If using {@inheritDoc} to copy description, it must be the first line in doc comment.';
                 $phpcsFile->addWarning($msg, $nextComment, 'FirstLine');
             }
