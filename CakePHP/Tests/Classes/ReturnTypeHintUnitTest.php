@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CakePHP\Tests\Classes;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;

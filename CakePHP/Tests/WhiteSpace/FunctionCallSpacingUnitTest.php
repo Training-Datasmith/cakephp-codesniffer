@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CakePHP\Tests\WhiteSpace;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;

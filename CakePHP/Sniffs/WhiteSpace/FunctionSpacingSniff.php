@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -15,6 +17,7 @@
 /**
  * Checks the separation between methods in a class or interface.
  */
+
 namespace CakePHP\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;

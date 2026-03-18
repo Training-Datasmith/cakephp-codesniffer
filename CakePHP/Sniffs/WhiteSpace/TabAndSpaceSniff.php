@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -17,6 +19,7 @@
  * Check for any line starting with 2 spaces - which would indicate space indenting
  * Also check for "\t " - a tab followed by a space, which is a common similar mistake
  */
+
 namespace CakePHP\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;

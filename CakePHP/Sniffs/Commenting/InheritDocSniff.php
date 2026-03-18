@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -65,7 +67,8 @@ class InheritDocSniff implements Sniff
 
         if (
             preg_match('/^@inheritDoc/i', (string) $tokens[$inheritDoc]['content']) === 1 &&
-            ( preg_match('/^@inheritDoc$/i', (string) $tokens[$inheritDoc]['content']) !== 1 ||
+            (
+                preg_match('/^@inheritDoc$/i', (string) $tokens[$inheritDoc]['content']) !== 1 ||
               $phpcsFile->findNext($empty, $inheritDoc + 1, $commentEnd, true) !== false
             )
         ) {

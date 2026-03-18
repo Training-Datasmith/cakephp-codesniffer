@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +14,7 @@
  * @since         CakePHP CodeSniffer 5.0.0
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace CakePHP\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;

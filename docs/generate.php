@@ -1,5 +1,7 @@
 #!/usr/bin/env php
 <?php
+
+declare(strict_types=1);
 $phar = file_exists(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'composer.phar');
 $command = ($phar ? 'php composer.phar' : 'composer') . ' explain';
 
